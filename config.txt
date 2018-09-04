@@ -1,0 +1,31 @@
+(0, 0, 0)
+(255, 255, 255)
+250
+100
+200
+150
+
+The first line is the background color in rgb. Default (0, 0, 0)
+The second line is the character color in rgb. Default (255, 255, 255)
+The third line is the size of the countdown clock. Default 250
+The fourth line is the size of the team name. Default 100
+The fifth line is the size of the score. Default 200
+The sixth line is the size of the foul count. Default 150
+
+Here are some common colors:
+WHITE	(255, 255, 255)
+SILVER	(192, 192, 192)
+GRAY	(128, 128, 128)
+BLACK	(0, 0, 0)
+RED	(255, 0, 0)
+MAROON	(128, 0, 0)
+YELLOW	(255, 255, 0)
+OLIVE	(128, 128, 0)
+LIME	(0, 255, 0)
+GREEN	(0, 128, 0)
+AQUA	(0, 255, 255)
+TEAL	(0, 128, 128)
+BLUE	(0, 0, 255)
+NAVY	(0, 0, 128)
+FUCHSIA	(255, 0, 255)
+PURPLE	(128, 0, 128)
