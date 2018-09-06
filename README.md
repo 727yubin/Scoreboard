@@ -30,6 +30,8 @@ This program can also recover data if a power outage occurs during a game.
 
 <kbd> d </kbd>: Add 0.1s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> c </kbd>: Subtract 0.1s
 
+<kbd> Space </kbd>: Start/stop clock
+
 <kbd> f </kbd>: Add 1 to period &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> v </kbd>: Subtract 1 from period
 
 <kbd> g </kbd>: Change possession
