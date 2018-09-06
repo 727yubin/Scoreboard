@@ -3,20 +3,21 @@ Use a computer(PC or Linux) as a scoreboard.
 
 This program is a basketball scoreboard without a shot clock. This is used at my school, [LES Loueizeh](lesbg.com), with a Raspberry Pi over VNC.
 
+This program can also recover data if a power outage occurs during a game.
+
 # Requirements:
 * Python 3
 * Pygame
 * Preferably a large display
 
 # Execution:
-## Windows:
-1. Download all files except `scoreboard.py`.
-2. Double click `scoreboard-win.py`.
-3. Follow the instructions on screen.
-
 ## Linux:
 1. Download all files except `LiberationSans.ttf` and `scoreboard.py`.
 2. `cd` into the directory, then run `python3 scoreboard.py`.
+3. Follow the instructions on screen.
+## Other OSes:
+1. Download all files except `scoreboard.py`.
+2. Double click `scoreboard-win.py`.
 3. Follow the instructions on screen.
 
 ## For both OSes:
