@@ -29,15 +29,29 @@ try:
 except:
 	print("School logo not found. ")
 
-# Define some variables
-team1name = input("Please enter team 1 name: ").upper()
-team2name = input("Please enter team 2 name: ").upper()
-team1score = 0
-team2score = 0
-currentperiod = 1
-team1fouls = 0
-team2fouls = 0
-possesion = 0
+if os.path.isfile("backup.txt"):
+	print("Reloading details... ")
+	backup = open("backup.txt", 'r')
+
+	time_a = float(backup.readline().rstrip('\n'))
+	team1name = backup.readline().rstrip('\n').upper()
+	team2name = backup.readline().rstrip('\n').upper()
+	team1score = int(backup.readline().rstrip('\n'))
+	team2score = int(backup.readline().rstrip('\n'))
+	currentperiod = int(backup.readline().rstrip('\n'))
+	team1fouls = int(backup.readline().rstrip('\n'))
+	team2fouls = int(backup.readline().rstrip('\n'))
+	possesion = bool(backup.readline().rstrip('\n'))
+
+else:
+	team1name = input("Please enter team 1 name: ").upper()
+	team2name = input("Please enter team 2 name: ").upper()
+	team1score = 0
+	team2score = 0
+	currentperiod = 1
+	team1fouls = 0
+	team2fouls = 0
+	possesion = False
 
 # Get values from config file
 bgcolor = literal_eval(config.readline().rstrip('\n'))
@@ -70,9 +84,7 @@ creditsfont = pygame.font.SysFont("liberationsans", 20)
 while True: # Main loop
 	clock.tick(30)
 	for event in pygame.event.get():
-		if event.type == QUIT:
-			sys.exit()
-			
+
 		if event.type == USEREVENT: # Countdown timer
 			if time_a > 0:
 				time_a -= 0.1
@@ -160,6 +172,8 @@ while True: # Main loop
 
 
 			if event.key == K_ESCAPE:
+				backup.close()
+				os.remove("backup.txt")
 				sys.exit()
 
 	# Make sure weird values don't occur
@@ -180,6 +194,10 @@ while True: # Main loop
 
 	if team2score < 0:
 		team2score = 0
+
+	backup = open("backup.txt", 'w')
+	backup.write('{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(str(time_a), team1name, team2name, str(team1score), str(team2score), 
+		str(currentperiod), str(team1fouls), str(team2fouls), str(possesion)))
 
 	# Switch between mm:ss and ss.c
 	if time_a > 60:
