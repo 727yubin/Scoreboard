@@ -29,11 +29,12 @@ try:
 except:
 	print("School logo not found. ")
 
+# Check if blackout has occurred(quite frequent in Lebanon)
 if os.path.isfile("backup.txt"):
 	print("Reloading details... ")
 	backup = open("backup.txt", 'r')
 
-	time_a = float(backup.readline().rstrip('\n'))
+	time_a = backup.readline().rstrip('\n')
 	team1name = backup.readline().rstrip('\n').upper()
 	team2name = backup.readline().rstrip('\n').upper()
 	team1score = int(backup.readline().rstrip('\n'))
@@ -42,6 +43,11 @@ if os.path.isfile("backup.txt"):
 	team1fouls = int(backup.readline().rstrip('\n'))
 	team2fouls = int(backup.readline().rstrip('\n'))
 	possesion = bool(backup.readline().rstrip('\n'))
+
+	try:
+		time_a = int(time_a)
+	except:
+		time_a = float(time_a)
 
 else:
 	team1name = input("Please enter team 1 name: ").upper()
@@ -73,13 +79,32 @@ clock = pygame.time.Clock()
 pygame.mouse.set_visible(0)
 
 # Set fonts
-timefont = pygame.font.SysFont("liberationsans", timefontsize)
-teamfont = pygame.font.SysFont("liberationsans", teamfontsize)
-scorefont = pygame.font.SysFont("liberationsans", scorefontsize)
-foulnumberfont = pygame.font.SysFont("liberationsans", foulnumberfontsize)
-foulfont = pygame.font.SysFont("liberationsans", 50)
-schoolfont = pygame.font.Font("pala.ttf", 80)
-creditsfont = pygame.font.SysFont("liberationsans", 20)
+if os.name == "posix": # Liberation Sans already installed
+	timefont = pygame.font.SysFont("liberationsans", timefontsize)
+	teamfont = pygame.font.SysFont("liberationsans", teamfontsize)
+	scorefont = pygame.font.SysFont("liberationsans", scorefontsize)
+	foulnumberfont = pygame.font.SysFont("liberationsans", foulnumberfontsize)
+	foulfont = pygame.font.SysFont("liberationsans", 50)
+	schoolfont = pygame.font.Font("pala.ttf", 80)
+	creditsfont = pygame.font.SysFont("liberationsans", 20)
+
+elif os.name == "nt": # Palatino Linotype already installed
+	timefont = pygame.font.Font("LiberationSans.ttf", timefontsize)
+	teamfont = pygame.font.Font("LiberationSans.ttf", teamfontsize)
+	scorefont = pygame.font.Font("LiberationSans.ttf", scorefontsize)
+	foulnumberfont = pygame.font.Font("LiberationSans.ttf", foulnumberfontsize)
+	foulfont = pygame.font.Font("LiberationSans.ttf", 50)
+	schoolfont = pygame.font.SysFont("Palatino Linotype", 80)
+	creditsfont = pygame.font.Font("LiberationSans.ttf", 20)
+
+else: # Not Linux and not Windows
+	timefont = pygame.font.Font("LiberationSans.ttf", timefontsize)
+	teamfont = pygame.font.Font("LiberationSans.ttf", teamfontsize)
+	scorefont = pygame.font.Font("LiberationSans.ttf", scorefontsize)
+	foulnumberfont = pygame.font.Font("LiberationSans.ttf", foulnumberfontsize)
+	foulfont = pygame.font.Font("LiberationSans.ttf", 50)
+	schoolfont = pygame.font.Font("pala.ttf", 80)
+	creditsfont = pygame.font.Font("LiberationSans.ttf", 20)
 
 while True: # Main loop
 	clock.tick(30)
@@ -195,6 +220,7 @@ while True: # Main loop
 	if team2score < 0:
 		team2score = 0
 
+	# Write to backup file
 	backup = open("backup.txt", 'w')
 	backup.write('{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(str(time_a), team1name, team2name, str(team1score), str(team2score), 
 		str(currentperiod), str(team1fouls), str(team2fouls), str(possesion)))
