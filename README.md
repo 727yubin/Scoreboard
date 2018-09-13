@@ -1,9 +1,9 @@
 # Scoreboard
-Use a computer(PC or Linux) as a scoreboard.
-
 This program is a basketball scoreboard without a shot clock. This is used at my school, [LES Loueizeh](lesbg.com), with a Raspberry Pi over VNC.
 
 This program can also recover data if a power outage occurs during a game.
+
+This program should work for all OSes, though not yet tested on OSX.
 
 # Requirements:
 * Python 3
@@ -11,7 +11,7 @@ This program can also recover data if a power outage occurs during a game.
 * Preferably a large display
 
 # Execution:
-`cd` into the directory, and run `scoreboard.py`.
+`cd` into the directory, and run `python3 scoreboard.py`.
 
 Linux systems do not need `liberationsans.ttf`; Windows systems do not need `pala.ttf`.
 
