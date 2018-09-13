@@ -39,7 +39,7 @@ except:
     pass
 
 # Check if blackout has occurred(quite frequent in Lebanon)
-if os.path.isfile('backup.txt'):
+if os.path.isfile('backup.txt') and os.stat("file").st_size != 0:
     print('Reloading details from previous game... ')
     backup = open('backup.txt', 'r')
 
@@ -110,6 +110,8 @@ else:  # Not Linux and not Windows
     schoolfont = pygame.font.Font('pala.ttf', 80)
     creditsfont = pygame.font.Font('LiberationSans.ttf', 20)
 
+pygame.time.set_timer(USEREVENT + 1, 100)
+    
 while True:  # Main loop
     clock.tick(30)
     for event in pygame.event.get():
@@ -120,7 +122,8 @@ while True:  # Main loop
             else:
                 pygame.time.set_timer(USEREVENT, 0)
 
-            backup = open('backup.txt', 'w', buffering = 2)
+        if event.type == USEREVENT + 1:
+            backup = open('backup.txt', 'w')
             backup.write('{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(
                 str(time_a), team1name, team2name, str(team1score), str(team2score),
                 str(currentperiod), str(team1fouls), str(team2fouls), str(possesion)))
