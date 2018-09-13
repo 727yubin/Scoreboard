@@ -32,13 +32,18 @@ try:
 except:
     print('School logo not found.')
     input('Please download https://github.com/727yubin/Scoreboard/blob/master/logo.png')
+try:
+    if os.stat("backup.txt").st_size == 0:
+        os.remove("backup.txt")
+except:
+    pass
 
 # Check if blackout has occurred(quite frequent in Lebanon)
 if os.path.isfile('backup.txt'):
     print('Reloading details from previous game... ')
     backup = open('backup.txt', 'r')
 
-    time_a = backup.readline().rstrip('\n')
+    time_a = float(backup.readline().rstrip('\n'))
     team1name = backup.readline().rstrip('\n').upper()
     team2name = backup.readline().rstrip('\n').upper()
     team1score = int(backup.readline().rstrip('\n'))
@@ -47,11 +52,6 @@ if os.path.isfile('backup.txt'):
     team1fouls = int(backup.readline().rstrip('\n'))
     team2fouls = int(backup.readline().rstrip('\n'))
     possesion = bool(backup.readline().rstrip('\n'))
-
-    try:
-        time_a = int(time_a)
-    except:
-        time_a = float(time_a)
 
 else:
     team1name = input('Please enter team 1 name: ').upper()
@@ -120,6 +120,14 @@ while True:  # Main loop
             else:
                 pygame.time.set_timer(USEREVENT, 0)
 
+            backup = open('backup.txt', 'w', buffering = 2)
+            backup.write('{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(
+                str(time_a), team1name, team2name, str(team1score), str(team2score),
+                str(currentperiod), str(team1fouls), str(team2fouls), str(possesion)))
+            backup.flush()
+            os.fsync(backup.fileno())
+            backup.close()
+
         if event.type == KEYDOWN:
 
             if event.key == K_SPACE:  # Pause/Play
@@ -129,7 +137,6 @@ while True:  # Main loop
                         a_on = True
                     else:
                         pygame.time.set_timer(USEREVENT, 0)
-                        pygame.time.set_timer(USEREVENT+1, 1000)
                         a_on = False
 
             if event.key == K_a:
@@ -205,12 +212,6 @@ while True:  # Main loop
 
     if team2score < 0:
         team2score = 0
-
-    # Write to backup file
-    backup = open('backup.txt', 'w')
-    backup.write('{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(
-        str(time_a), team1name, team2name, str(team1score), str(team2score),
-        str(currentperiod), str(team1fouls), str(team2fouls), str(possesion)))
 
     # Switch between mm:ss and ss.c
     if time_a > 60:
