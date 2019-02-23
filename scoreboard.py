@@ -1,4 +1,4 @@
-# Copyright 2018 Yubin Lee <727yubin@gmail.com>
+# Copyright 2019 Yubin Lee <727yubin@gmail.com>
 # Licensed under GPL v3
 
 # Toggleable clock code based on
@@ -31,7 +31,7 @@ try:
     logo = pygame.transform.scale(logo, (80, 80))
 except:
     print('School logo not found.')
-    input('Please download https://github.com/727yubin/Scoreboard/blob/master/logo.png')
+    input('Please place your logo as logo.png in the same directory')
 try:
     if os.stat("backup.txt").st_size == 0:
         os.remove("backup.txt")
@@ -70,6 +70,8 @@ timefontsize = int(config.readline().rstrip('\n'))
 teamfontsize = int(config.readline().rstrip('\n'))
 scorefontsize = int(config.readline().rstrip('\n'))
 foulnumberfontsize = int(config.readline().rstrip('\n'))
+basefonttype = config.readline().rstrip('\n')
+schoolfonttype = config.readline().rstrip('\n')
 
 # Basic pygame stuff
 pygame.init()
@@ -82,35 +84,26 @@ rect = background.fill(bgcolor)
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(0)
 
-# Set fonts
-if os.name == 'posix':  # Liberation Sans already installed
-    timefont = pygame.font.SysFont('liberationsans', timefontsize)
-    teamfont = pygame.font.SysFont('liberationsans', teamfontsize)
-    scorefont = pygame.font.SysFont('liberationsans', scorefontsize)
-    foulnumberfont = pygame.font.SysFont('liberationsans', foulnumberfontsize)
-    foulfont = pygame.font.SysFont('liberationsans', 50)
-    schoolfont = pygame.font.Font('pala.ttf', 80)
-    creditsfont = pygame.font.SysFont('liberationsans', 20)
+backup = open('backup.txt', 'w')
 
-elif os.name == 'nt':  # Palatino Linotype already installed
-    timefont = pygame.font.Font('LiberationSans.ttf', timefontsize)
-    teamfont = pygame.font.Font('LiberationSans.ttf', teamfontsize)
-    scorefont = pygame.font.Font('LiberationSans.ttf', scorefontsize)
-    foulnumberfont = pygame.font.Font('LiberationSans.ttf', foulnumberfontsize)
-    foulfont = pygame.font.Font('LiberationSans.ttf', 50)
-    schoolfont = pygame.font.SysFont('Palatino Linotype', 80)
-    creditsfont = pygame.font.Font('LiberationSans.ttf', 20)
+timefont = pygame.font.Font(basefonttype, timefontsize)
+teamfont = pygame.font.Font(basefonttype, teamfontsize)
+scorefont = pygame.font.Font(basefonttype, scorefontsize)
+foulnumberfont = pygame.font.Font(basefonttype, foulnumberfontsize)
+foulfont = pygame.font.Font(basefonttype, 50)
+schoolfont = pygame.font.Font('pala.ttf', 80)
+creditsfont = pygame.font.Font(basefonttype, 30)
 
-else:  # Not Linux and not Windows
-    timefont = pygame.font.Font('LiberationSans.ttf', timefontsize)
-    teamfont = pygame.font.Font('LiberationSans.ttf', teamfontsize)
-    scorefont = pygame.font.Font('LiberationSans.ttf', scorefontsize)
-    foulnumberfont = pygame.font.Font('LiberationSans.ttf', foulnumberfontsize)
-    foulfont = pygame.font.Font('LiberationSans.ttf', 50)
-    schoolfont = pygame.font.Font('pala.ttf', 80)
-    creditsfont = pygame.font.Font('LiberationSans.ttf', 20)
 
-pygame.time.set_timer(USEREVENT + 1, 100)
+def WriteToBackup():
+    backup = open('backup.txt', 'w')
+    backup.write('{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(
+        str(time_a), team1name, team2name, str(team1score),
+        str(team2score), str(currentperiod), str(team1fouls),
+        str(team2fouls), str(possesion)))
+    backup.flush()
+    os.fsync(backup.fileno())
+    backup.close()
 
 while True:  # Main loop
     clock.tick(30)
@@ -119,29 +112,21 @@ while True:  # Main loop
         if event.type == USEREVENT:  # Countdown timer
             if time_a > 0:
                 time_a -= 0.1
+                time_a = round(time_a, 1)
             else:
                 pygame.time.set_timer(USEREVENT, 0)
-
-        if event.type == USEREVENT + 1:
-            backup = open('backup.txt', 'w')
-            backup.write('{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(
-                str(time_a), team1name, team2name, str(team1score),
-                str(team2score), str(currentperiod), str(team1fouls),
-                str(team2fouls), str(possesion)))
-            backup.flush()
-            os.fsync(backup.fileno())
-            backup.close()
+            WriteToBackup()
 
         if event.type == KEYDOWN:
 
             if event.key == K_SPACE:  # Pause/Play
 
-                    if not a_on:
-                        pygame.time.set_timer(USEREVENT, 100)
-                        a_on = True
-                    else:
-                        pygame.time.set_timer(USEREVENT, 0)
-                        a_on = False
+                if not a_on:
+                    pygame.time.set_timer(USEREVENT, 100)
+                    a_on = True
+                else:
+                    pygame.time.set_timer(USEREVENT, 0)
+                    a_on = False
 
             if event.key == K_a:
                 time_a += 60
@@ -161,6 +146,9 @@ while True:  # Main loop
                 currentperiod += 1
             if event.key == K_v:
                 currentperiod -= 1
+            
+            if currentperiod < 1:
+                currentperiod = 1
 
             if event.key == K_h:
                 team1score += 1
@@ -171,10 +159,16 @@ while True:  # Main loop
             if event.key == K_l:
                 team1score -= 1
 
+            if team1score < 0:
+                team1score = 0
+
             if event.key == K_SEMICOLON:
                 team1fouls += 1
             if event.key == K_QUOTE:
                 team1fouls -= 1
+
+            if team1fouls < 0:
+                team1fouls = 0
 
             if event.key == K_b:
                 team2score += 1
@@ -185,37 +179,32 @@ while True:  # Main loop
             if event.key == K_COMMA:
                 team2score -= 1
 
+            if team2score < 0:
+                team2score = 0
+
             if event.key == K_PERIOD:
                 team2fouls += 1
             if event.key == K_SLASH:
                 team2fouls -= 1
+
+            if team2fouls < 0:
+                team2fouls = 0
 
             if event.key == K_g:
                 possesion = not possesion
 
             if event.key == K_ESCAPE:
                 backup.close()
+                print("Purging backup...")
                 os.remove('backup.txt')
                 sys.exit()
 
-    # Make sure weird values don't occur
-    if time_a < 0:
+            WriteToBackup()
+
+    if time_a <= 0:
         time_a = 0
-
-    if currentperiod < 1:
-        currentperiod = 1
-
-    if team1fouls < 0:
-        team1fouls = 0
-
-    if team2fouls < 0:
-        team2fouls = 0
-
-    if team1score < 0:
-        team1score = 0
-
-    if team2score < 0:
-        team2score = 0
+        a_on = False
+        pygame.time.set_timer(USEREVENT, 0)
 
     # Switch between mm:ss and ss.c
     if time_a > 60:
@@ -283,7 +272,7 @@ while True:  # Main loop
 
     credits_txt = creditsfont.render("Yubin Lee '19", 1, textcolor)
     creditsrect = credits_txt.get_rect()
-    creditsrect.center = (1210, 70)
+    creditsrect.center = (1180, 70)
 
     # Blit everything
     screen.blit(background, rect)
