@@ -17,9 +17,7 @@ This program should work for all OSes, though not yet tested on OSX.
 # Execution:
 `cd` into the directory, and run `python3 scoreboard.py`.
 
-Linux systems do not need `liberationsans.ttf`; Windows systems do not need `pala.ttf`.
-
-Font color, background color, and font size can be controlled by editing `config.txt`.
+Fonts and colors can be controlled by editing `config.txt`.
 
 # Keys:
 <kbd> a </kbd>: Add 60s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> z </kbd>: Subtract 60s
