@@ -91,8 +91,9 @@ teamfont = pygame.font.Font(basefonttype, teamfontsize)
 scorefont = pygame.font.Font(basefonttype, scorefontsize)
 foulnumberfont = pygame.font.Font(basefonttype, foulnumberfontsize)
 foulfont = pygame.font.Font(basefonttype, 50)
-schoolfont = pygame.font.Font('pala.ttf', 80)
-creditsfont = pygame.font.Font(basefonttype, 30)
+schoolfont = pygame.font.Font(schoolfonttype, 80)
+credits1font = pygame.font.Font(basefonttype, 20)
+credits2font = pygame.font.Font(basefonttype, 30)
 
 
 def WriteToBackup():
@@ -270,9 +271,13 @@ while True:  # Main loop
     schoolrect = school_txt.get_rect()
     schoolrect.center = (690, 50)
 
-    credits_txt = creditsfont.render("Yubin Lee '19", 1, textcolor)
-    creditsrect = credits_txt.get_rect()
-    creditsrect.center = (1180, 70)
+    credits1_txt = credits1font.render("Programmed by:", 1, textcolor)
+    credits1rect = credits1_txt.get_rect()
+    credits1rect.center = (1200, 45)
+
+    credits2_txt = credits2font.render("Yubin Lee '19", 1, textcolor)
+    credits2rect = credits1_txt.get_rect()
+    credits2rect.center = (1170, 65)
 
     # Blit everything
     screen.blit(background, rect)
@@ -281,7 +286,8 @@ while True:  # Main loop
     pygame.draw.rect(screen, (255, 255, 255), (330, 110, 620, 230), 5)
     pygame.draw.rect(screen, (255, 255, 255), (570, 450, 140, 200), 5)
     screen.blit(school_txt, schoolrect)
-    screen.blit(credits_txt, creditsrect)
+    screen.blit(credits1_txt, credits1rect)
+    screen.blit(credits2_txt, credits2rect)
     screen.blit(time_a_txt, time_a_rect)
     screen.blit(team1name_txt, team1namerect)
     screen.blit(team2name_txt, team2namerect)
