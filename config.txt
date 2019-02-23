@@ -4,13 +4,17 @@
 100
 200
 150
+LiberationSans.ttf
+pala.ttf
 
-The first line is the background color in rgb. Default (0, 0, 0)
-The second line is the character color in rgb. Default (255, 255, 255)
-The third line is the size of the countdown clock. Default 250
-The fourth line is the size of the team name. Default 100
-The fifth line is the size of the score. Default 200
-The sixth line is the size of the foul count. Default 150
+Line 1: background color in rgb. Default (0, 0, 0)
+Line 2: character color in rgb. Default (255, 255, 255)
+Line 3: size of the countdown clock. Default 250
+Line 4: size of the team name. Default 100
+Line 5: size of the score. Default 200
+Line 6: size of the foul count. Default 150
+Line 7: font type of all writing. Case sensitive.
+Line 8: font type of school name. Case sensitive.
 
 Here are some common colors:
 WHITE	(255, 255, 255)
