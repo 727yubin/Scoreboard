@@ -51,8 +51,8 @@ if os.path.isfile('backup.txt') and os.stat('backup.txt').st_size != 0:
     possesion = bool(backup.readline().rstrip('\n'))
 
 else:
-    team1name = "HERMON"#input('Please enter team 1 name: ').upper()
-    team2name = "BAROUK"#input('Please enter team 2 name: ').upper()
+    team1name = input('Please enter team 1 name: ').upper()
+    team2name = input('Please enter team 2 name: ').upper()
     team1score = 0
     team2score = 0
     currentperiod = 1
@@ -80,7 +80,7 @@ screen = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
 background = pygame.Surface(screen.get_size())
 rect = background.fill(bgcolor)
 clock = pygame.time.Clock()
-#pygame.mouse.set_visible(0)
+pygame.mouse.set_visible(0)
 
 backup = open('backup.txt', 'w')
 
