@@ -107,7 +107,6 @@ def WriteToBackup():
     backup.close()
 
 while True:  # Main loop
-    clock.tick(30)
     for event in pygame.event.get():
 
         if event.type == USEREVENT:  # Countdown timer
