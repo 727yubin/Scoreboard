@@ -94,6 +94,26 @@ credits1font = pygame.font.Font(basefonttype, 20)
 credits2font = pygame.font.Font(basefonttype, 30)
 
 
+def BoilerplateGraphics():
+    school_txt = schoolfont.render('LES Loueizeh', 1, textcolor)
+    schoolrect = school_txt.get_rect()
+    schoolrect.center = (690, 50)
+
+    credits1_txt = credits1font.render("Programmed by:", 1, textcolor)
+    credits1rect = credits1_txt.get_rect()
+    credits1rect.center = (1200, 45)
+
+    credits2_txt = credits2font.render("Yubin Lee '19", 1, textcolor)
+    credits2rect = credits1_txt.get_rect()
+    credits2rect.center = (1170, 65)
+    
+    screen.blit(background, rect)
+    screen.blit(logo, (350, 0))
+    pygame.draw.rect(screen, (255, 255, 255), (0, 90, 1280, 630), 10)
+    screen.blit(school_txt, schoolrect)
+    screen.blit(credits1_txt, credits1rect)
+    screen.blit(credits2_txt, credits2rect)
+
 def WriteToBackup():
     backup = open('backup.txt', 'w')
     backup.write('{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(
@@ -263,27 +283,11 @@ while True:  # Main loop
         possesionrect = possesion_txt.get_rect()
         possesionrect.center = (530, 550)
 
-    school_txt = schoolfont.render('LES Loueizeh', 1, textcolor)
-    schoolrect = school_txt.get_rect()
-    schoolrect.center = (690, 50)
-
-    credits1_txt = credits1font.render("Programmed by:", 1, textcolor)
-    credits1rect = credits1_txt.get_rect()
-    credits1rect.center = (1200, 45)
-
-    credits2_txt = credits2font.render("Yubin Lee '19", 1, textcolor)
-    credits2rect = credits1_txt.get_rect()
-    credits2rect.center = (1170, 65)
 
     # Blit everything
-    screen.blit(background, rect)
-    screen.blit(logo, (350, 0))
-    pygame.draw.rect(screen, (255, 255, 255), (0, 90, 1280, 630), 10)
+    BoilerplateGraphics()
     pygame.draw.rect(screen, (255, 255, 255), (330, 110, 620, 230), 5)
     pygame.draw.rect(screen, (255, 255, 255), (570, 450, 140, 200), 5)
-    screen.blit(school_txt, schoolrect)
-    screen.blit(credits1_txt, credits1rect)
-    screen.blit(credits2_txt, credits2rect)
 
     for num in range(team1fouls):
         if num > 4: # 5 fouls, but num starts from 0
