@@ -13,9 +13,6 @@ import os
 import sys
 from ast import literal_eval  # For getting tuples from config
 
-time_a = 0
-a_on = False
-
 # Check for config file
 try:
     config = open('config.txt', 'r')
@@ -54,8 +51,8 @@ if os.path.isfile('backup.txt') and os.stat('backup.txt').st_size != 0:
     possesion = bool(backup.readline().rstrip('\n'))
 
 else:
-    team1name = input('Please enter team 1 name: ').upper()
-    team2name = input('Please enter team 2 name: ').upper()
+    team1name = "HERMON"#input('Please enter team 1 name: ').upper()
+    team2name = "BAROUK"#input('Please enter team 2 name: ').upper()
     team1score = 0
     team2score = 0
     currentperiod = 1
@@ -73,16 +70,17 @@ foulnumberfontsize = int(config.readline().rstrip('\n'))
 basefonttype = config.readline().rstrip('\n')
 schoolfonttype = config.readline().rstrip('\n')
 
+time_a = 0
+a_on = False
+
 # Basic pygame stuff
 pygame.init()
 pygame.display.init()
 screen = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
-
 background = pygame.Surface(screen.get_size())
 rect = background.fill(bgcolor)
-
 clock = pygame.time.Clock()
-pygame.mouse.set_visible(0)
+#pygame.mouse.set_visible(0)
 
 backup = open('backup.txt', 'w')
 
@@ -120,7 +118,6 @@ while True:  # Main loop
         if event.type == KEYDOWN:
 
             if event.key == K_SPACE:  # Pause/Play
-
                 if not a_on:
                     pygame.time.set_timer(USEREVENT, 100)
                     a_on = True
@@ -287,6 +284,17 @@ while True:  # Main loop
     screen.blit(school_txt, schoolrect)
     screen.blit(credits1_txt, credits1rect)
     screen.blit(credits2_txt, credits2rect)
+
+    for num in range(team1fouls):
+        if num > 4: # 5 fouls, but num starts from 0
+            num = 4
+        pygame.draw.rect(screen, (63 * num, 252 - 63 * num, 0), (395, 680 - 30 * num, 50, 20))
+    
+    for num in range(team2fouls):
+        if num > 4:
+            num = 4
+        pygame.draw.rect(screen, (63 * num, 252 - 63 * num, 0), (1215, 680 - 30 * num, 50, 20))
+
     screen.blit(time_a_txt, time_a_rect)
     screen.blit(team1name_txt, team1namerect)
     screen.blit(team2name_txt, team2namerect)
