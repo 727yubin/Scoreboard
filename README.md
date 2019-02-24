@@ -6,8 +6,8 @@ This program can also recover data if a power outage occurs during a game.
 This program should work for all OSes, though not yet tested on OSX.
 
 # Pictures
-<img src="https://preview.redd.it/is9bczdb75i21.jpg?width=960&crop=smart&auto=webp&s=0b36cfdab4355f02367f5edc0fa5359e6b88ba70">
-
+<img src="1.jpg">
+<img src="2.jpg">
 
 # Requirements:
 * Python 3
