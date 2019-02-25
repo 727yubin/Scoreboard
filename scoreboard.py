@@ -34,6 +34,31 @@ except:
     input('Please place your logo as logo.png in the same directory')
     sys.exit()
 
+# Get values from config file
+bgcolor = literal_eval(config.readline().rstrip('\n'))
+textcolor = literal_eval(config.readline().rstrip('\n'))
+timefontsize = int(config.readline().rstrip('\n'))
+teamfontsize = int(config.readline().rstrip('\n'))
+scorefontsize = int(config.readline().rstrip('\n'))
+foulnumberfontsize = int(config.readline().rstrip('\n'))
+basefonttype = config.readline().rstrip('\n')
+schoolfonttype = config.readline().rstrip('\n')
+
+try: # Fonts
+    timefont = pygame.font.Font(basefonttype, timefontsize)
+    teamfont = pygame.font.Font(basefonttype, teamfontsize)
+    scorefont = pygame.font.Font(basefonttype, scorefontsize)
+    foulnumberfont = pygame.font.Font(basefonttype, foulnumberfontsize)
+    foulfont = pygame.font.Font(basefonttype, 50)
+    credits1font = pygame.font.Font(basefonttype, 20)
+    credits2font = pygame.font.Font(basefonttype, 30)
+except:
+    input("No base font found; please refer to https://github.com/727yubin/Scoreboard")
+try:
+    schoolfont = pygame.font.Font(schoolfonttype, 80)
+except:
+    input("No school font found; please refer to https://github.com/727yubin/Scoreboard")
+
 try:
     if os.stat("backup.txt").st_size == 0:
         os.remove("backup.txt")
@@ -72,16 +97,6 @@ else:
     team2fouls = 0
     possesion = False
 
-# Get values from config file
-bgcolor = literal_eval(config.readline().rstrip('\n'))
-textcolor = literal_eval(config.readline().rstrip('\n'))
-timefontsize = int(config.readline().rstrip('\n'))
-teamfontsize = int(config.readline().rstrip('\n'))
-scorefontsize = int(config.readline().rstrip('\n'))
-foulnumberfontsize = int(config.readline().rstrip('\n'))
-basefonttype = config.readline().rstrip('\n')
-schoolfonttype = config.readline().rstrip('\n')
-
 # Basic pygame stuff
 pygame.init()
 pygame.display.init()
@@ -92,15 +107,6 @@ clock = pygame.time.Clock()
 pygame.mouse.set_visible(0)
 
 backup = open('backup.txt', 'w')
-
-timefont = pygame.font.Font(basefonttype, timefontsize)
-teamfont = pygame.font.Font(basefonttype, teamfontsize)
-scorefont = pygame.font.Font(basefonttype, scorefontsize)
-foulnumberfont = pygame.font.Font(basefonttype, foulnumberfontsize)
-foulfont = pygame.font.Font(basefonttype, 50)
-schoolfont = pygame.font.Font(schoolfonttype, 80)
-credits1font = pygame.font.Font(basefonttype, 20)
-credits2font = pygame.font.Font(basefonttype, 30)
 
 
 def WriteToBackup():
