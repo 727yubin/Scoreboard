@@ -18,6 +18,7 @@ This program should work for all OSes, though not yet tested on OSX.
 `cd` into the directory.
 For the basketball scoreboard, run `python3 scoreboard.py`.
 For the football(soccer) scoreboard, run `python3 scoreboard-football.py`.
+For the volleyball scoreboard, run `python3 scoreboard-volleyball.py`.
 
 Fonts and colors can be controlled by editing `config.txt`.
 
@@ -65,3 +66,19 @@ Fonts and colors can be controlled by editing `config.txt`.
 <kbd> Space </kbd>: Start clock
 
 <kbd> r </kbd>: Reset clock
+
+<kbd> Esc </kbd>: Quit
+
+## Volleyball:
+
+<kbd> a </kbd>: +1 Team 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> s </kbd>: +1 Team 2
+
+<kbd> z </kbd>: -1 Team 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> x </kbd>: -1 Team 2
+
+<kbd> f </kbd>: +1 Set score team 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> v </kbd>: +1 Set score team 2
+
+<kbd> g </kbd>: -1 Set score team 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> b </kbd>: -1 Set score team 2
+
+<kbd> q </kbd>: Start next set (winner of current set automatically calculated)
+
+<kbd> Esc </kbd>: Quit
