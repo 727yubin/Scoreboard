@@ -247,12 +247,12 @@ while True:  # Main loop
                 possesion = not possesion
 
             if event.key == K_1 or event.key == K_KP1:
-            	time_b = 24
-            	pygame.time.set_timer(USEREVENT + 1, 100)
+                time_b = 24
+                pygame.time.set_timer(USEREVENT + 1, 100)
 
             if event.key == K_2 or event.key == K_KP2:
-            	time_b = 14
-            	pygame.time.set_timer(USEREVENT + 1, 100)
+                time_b = 14
+                pygame.time.set_timer(USEREVENT + 1, 100)
 
             if event.key == K_ESCAPE:
                 backup.close()
@@ -274,9 +274,9 @@ while True:  # Main loop
         time_a_str = '%.1f' % time_a
 
     if time_b < 10:
-    	time_b_str = '%.1f' % time_b
+        time_b_str = '%.1f' % time_b
     else:
-    	time_b_str = str(int(time_b))
+        time_b_str = str(int(time_b))
 
     # Start rendering
     Boilerplate()
