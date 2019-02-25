@@ -23,6 +23,8 @@ except FileNotFoundError:
     input('Please download https://github.com/727yubin/Scoreboard/blob/master/config.txt')
     sys.exit()
 
+print('')
+
 # School logo
 try:
     logo = pygame.image.load('logo.png')
@@ -32,31 +34,17 @@ except:
     input('Please place your logo as logo.png in the same directory')
     sys.exit()
 
-print('')
-
-# Check for empty backup file
 try:
     if os.stat("backup.txt").st_size == 0:
         os.remove("backup.txt")
 except:
     pass
 
-# First set the times and states
 time_a = 0
 a_on = False
 
 time_b = 24
 b_on = False
-
-# Get values from config file
-bgcolor = literal_eval(config.readline().rstrip('\n'))
-textcolor = literal_eval(config.readline().rstrip('\n'))
-timefontsize = int(config.readline().rstrip('\n'))
-teamfontsize = int(config.readline().rstrip('\n'))
-scorefontsize = int(config.readline().rstrip('\n'))
-foulnumberfontsize = int(config.readline().rstrip('\n'))
-basefonttype = config.readline().rstrip('\n')
-schoolfonttype = config.readline().rstrip('\n')
 
 # Check if blackout has occurred(quite frequent in Lebanon)
 if os.path.isfile('backup.txt') and os.stat('backup.txt').st_size != 0:
@@ -74,7 +62,7 @@ if os.path.isfile('backup.txt') and os.stat('backup.txt').st_size != 0:
     team2fouls = int(backup.readline().rstrip('\n'))
     possesion = bool(backup.readline().rstrip('\n'))
 
-else: # No blackout
+else:
     team1name = input('Please enter team 1 name: ').upper()
     team2name = input('Please enter team 2 name: ').upper()
     team1score = 0
@@ -83,6 +71,16 @@ else: # No blackout
     team1fouls = 0
     team2fouls = 0
     possesion = False
+
+# Get values from config file
+bgcolor = literal_eval(config.readline().rstrip('\n'))
+textcolor = literal_eval(config.readline().rstrip('\n'))
+timefontsize = int(config.readline().rstrip('\n'))
+teamfontsize = int(config.readline().rstrip('\n'))
+scorefontsize = int(config.readline().rstrip('\n'))
+foulnumberfontsize = int(config.readline().rstrip('\n'))
+basefonttype = config.readline().rstrip('\n')
+schoolfonttype = config.readline().rstrip('\n')
 
 # Basic pygame stuff
 pygame.init()
@@ -93,6 +91,8 @@ rect = background.fill(bgcolor)
 clock = pygame.time.Clock()
 pygame.mouse.set_visible(0)
 
+backup = open('backup.txt', 'w')
+
 timefont = pygame.font.Font(basefonttype, timefontsize)
 teamfont = pygame.font.Font(basefonttype, teamfontsize)
 scorefont = pygame.font.Font(basefonttype, scorefontsize)
@@ -102,38 +102,6 @@ schoolfont = pygame.font.Font(schoolfonttype, 80)
 credits1font = pygame.font.Font(basefonttype, 20)
 credits2font = pygame.font.Font(basefonttype, 30)
 
-backup = open('backup.txt', 'w')
-
-
-def Boilerplate():
-    team1name_txt = teamfont.render(team1name, 1, textcolor)
-    team1namerect = team1name_txt.get_rect()
-    team1namerect.center = (250, 500)
-
-    team2name_txt = teamfont.render(team2name, 1, textcolor)
-    team2namerect = team2name_txt.get_rect()
-    team2namerect.center = (1030, 500)
-
-    school_txt = schoolfont.render('LES Loueizeh', 1, textcolor)
-    schoolrect = school_txt.get_rect()
-    schoolrect.center = (690, 50)
-
-    credits1_txt = credits1font.render("Programmed by:", 1, textcolor)
-    credits1rect = credits1_txt.get_rect()
-    credits1rect.center = (1200, 45)
-
-    credits2_txt = credits2font.render("Yubin Lee '19", 1, textcolor)
-    credits2rect = credits1_txt.get_rect()
-    credits2rect.center = (1170, 65)
-
-    screen.blit(background, rect)
-    screen.blit(logo, (350, 0))
-    pygame.draw.rect(screen, (255, 255, 255), (0, 90, 1280, 630), 10)
-    screen.blit(school_txt, schoolrect)
-    screen.blit(credits1_txt, credits1rect)
-    screen.blit(credits2_txt, credits2rect)
-    screen.blit(team1name_txt, team1namerect)
-    screen.blit(team2name_txt, team2namerect)
 
 def WriteToBackup():
     backup = open('backup.txt', 'w')
@@ -156,7 +124,7 @@ while True:  # Main loop
                 pygame.time.set_timer(USEREVENT, 0)
             WriteToBackup()
 
-        if event.type == USEREVENT + 1: # Shot clock
+        if event.type == USEREVENT + 1:
             if time_b > 0:
                 time_b -= 0.1
                 time_b = round(time_b, 1)
@@ -279,8 +247,6 @@ while True:  # Main loop
         time_b_str = str(int(time_b))
 
     # Start rendering
-    Boilerplate()
-
     time_a_txt = timefont.render(time_a_str, 1, textcolor)
     time_a_rect = time_a_txt.get_rect()
     time_a_rect.center = (640, 220)
@@ -288,6 +254,14 @@ while True:  # Main loop
     time_b_txt = foulnumberfont.render(time_b_str, 1, textcolor)
     time_b_rect = time_b_txt.get_rect()
     time_b_rect.center = (640, 560)
+
+    team1name_txt = teamfont.render(team1name, 1, textcolor)
+    team1namerect = team1name_txt.get_rect()
+    team1namerect.center = (250, 500)
+
+    team2name_txt = teamfont.render(team2name, 1, textcolor)
+    team2namerect = team2name_txt.get_rect()
+    team2namerect.center = (1030, 500)
 
     team1score_txt = scorefont.render(str(team1score), 1, textcolor)
     team1scorerect = team1score_txt.get_rect()
@@ -297,9 +271,13 @@ while True:  # Main loop
     team2scorerect = team2score_txt.get_rect()
     team2scorerect.center = (1070, 350)
 
-    period_txt = teamfont.render('PERIOD %s' % str(int(currentperiod)), 1, textcolor)
+    period_txt = teamfont.render('PERIOD', 1, textcolor)
     periodrect = period_txt.get_rect()
-    periodrect.center = (640, 390)
+    periodrect.center = (600, 390)
+
+    currentperiod_txt = teamfont.render(str(currentperiod), 1, textcolor)
+    currentperiodrect = currentperiod_txt.get_rect()
+    currentperiodrect.center = (850, 390)
 
     foul_txt = foulfont.render('FOULS', 1, textcolor)
     foultextrect1 = foul_txt.get_rect()
@@ -325,9 +303,27 @@ while True:  # Main loop
         possesionrect = possesion_txt.get_rect()
         possesionrect.center = (350, 390)
 
+    school_txt = schoolfont.render('LES Loueizeh', 1, textcolor)
+    schoolrect = school_txt.get_rect()
+    schoolrect.center = (690, 50)
+
+    credits1_txt = credits1font.render("Programmed by:", 1, textcolor)
+    credits1rect = credits1_txt.get_rect()
+    credits1rect.center = (1200, 45)
+
+    credits2_txt = credits2font.render("Yubin Lee '19", 1, textcolor)
+    credits2rect = credits1_txt.get_rect()
+    credits2rect.center = (1170, 65)
+
     # Blit everything
+    screen.blit(background, rect)
+    screen.blit(logo, (350, 0))
+    pygame.draw.rect(screen, (255, 255, 255), (0, 90, 1280, 630), 10)
     pygame.draw.rect(screen, (255, 255, 255), (330, 110, 620, 230), 5)
     pygame.draw.rect(screen, (255, 255, 255), (520, 470, 240, 180), 5)
+    screen.blit(school_txt, schoolrect)
+    screen.blit(credits1_txt, credits1rect)
+    screen.blit(credits2_txt, credits2rect)
 
     for num in range(team1fouls):
         if num > 4: # 5 fouls, but num starts from 0
@@ -341,9 +337,12 @@ while True:  # Main loop
 
     screen.blit(time_a_txt, time_a_rect)
     screen.blit(time_b_txt, time_b_rect)
+    screen.blit(team1name_txt, team1namerect)
+    screen.blit(team2name_txt, team2namerect)
     screen.blit(team1score_txt, team1scorerect)
     screen.blit(team2score_txt, team2scorerect)
     screen.blit(period_txt, periodrect)
+    screen.blit(currentperiod_txt, currentperiodrect)
     screen.blit(foul_txt, foultextrect1)
     screen.blit(foul_txt, foultextrect2)
     screen.blit(team1fouls_txt, team1foulsrect)
