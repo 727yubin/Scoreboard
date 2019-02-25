@@ -52,6 +52,7 @@ if os.path.isfile('backup.txt') and os.stat('backup.txt').st_size != 0:
     backup = open('backup.txt', 'r')
 
     time_a = float(backup.readline().rstrip('\n'))
+    time_b = float(backup.readline().rstrip('\n'))
     team1name = backup.readline().rstrip('\n').upper()
     team2name = backup.readline().rstrip('\n').upper()
     team1score = int(backup.readline().rstrip('\n'))
@@ -62,8 +63,8 @@ if os.path.isfile('backup.txt') and os.stat('backup.txt').st_size != 0:
     possesion = bool(backup.readline().rstrip('\n'))
 
 else:
-    team1name = "HERMON"#input('Please enter team 1 name: ').upper()
-    team2name = "BAROUK"#input('Please enter team 2 name: ').upper()
+    team1name = input('Please enter team 1 name: ').upper()
+    team2name = input('Please enter team 2 name: ').upper()
     team1score = 0
     team2score = 0
     currentperiod = 1
@@ -102,30 +103,10 @@ credits1font = pygame.font.Font(basefonttype, 20)
 credits2font = pygame.font.Font(basefonttype, 30)
 
 
-def BoilerplateGraphics():
-    school_txt = schoolfont.render('LES Loueizeh', 1, textcolor)
-    schoolrect = school_txt.get_rect()
-    schoolrect.center = (690, 50)
-
-    credits1_txt = credits1font.render("Programmed by:", 1, textcolor)
-    credits1rect = credits1_txt.get_rect()
-    credits1rect.center = (1200, 45)
-
-    credits2_txt = credits2font.render("Yubin Lee '19", 1, textcolor)
-    credits2rect = credits1_txt.get_rect()
-    credits2rect.center = (1170, 65)
-    
-    screen.blit(background, rect)
-    screen.blit(logo, (350, 0))
-    pygame.draw.rect(screen, (255, 255, 255), (0, 90, 1280, 630), 10)
-    screen.blit(school_txt, schoolrect)
-    screen.blit(credits1_txt, credits1rect)
-    screen.blit(credits2_txt, credits2rect)
-
 def WriteToBackup():
     backup = open('backup.txt', 'w')
     backup.write('{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n'.format(
-        str(time_a), team1name, team2name, str(team1score),
+        str(time_a), str(time_b), team1name, team2name, str(team1score),
         str(team2score), str(currentperiod), str(team1fouls),
         str(team2fouls), str(possesion)))
     backup.flush()
@@ -322,11 +303,27 @@ while True:  # Main loop
         possesionrect = possesion_txt.get_rect()
         possesionrect.center = (350, 390)
 
+    school_txt = schoolfont.render('LES Loueizeh', 1, textcolor)
+    schoolrect = school_txt.get_rect()
+    schoolrect.center = (690, 50)
+
+    credits1_txt = credits1font.render("Programmed by:", 1, textcolor)
+    credits1rect = credits1_txt.get_rect()
+    credits1rect.center = (1200, 45)
+
+    credits2_txt = credits2font.render("Yubin Lee '19", 1, textcolor)
+    credits2rect = credits1_txt.get_rect()
+    credits2rect.center = (1170, 65)
 
     # Blit everything
-    BoilerplateGraphics()
+    screen.blit(background, rect)
+    screen.blit(logo, (350, 0))
+    pygame.draw.rect(screen, (255, 255, 255), (0, 90, 1280, 630), 10)
     pygame.draw.rect(screen, (255, 255, 255), (330, 110, 620, 230), 5)
     pygame.draw.rect(screen, (255, 255, 255), (520, 470, 240, 180), 5)
+    screen.blit(school_txt, schoolrect)
+    screen.blit(credits1_txt, credits1rect)
+    screen.blit(credits2_txt, credits2rect)
 
     for num in range(team1fouls):
         if num > 4: # 5 fouls, but num starts from 0
