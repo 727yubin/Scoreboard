@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # Copyright 2019 Yubin Lee <727yubin@gmail.com>
 # Licensed under GPL v3
 
@@ -19,6 +21,7 @@ try:
 except FileNotFoundError:
     print('Configuration file not found.')
     input('Please download https://github.com/727yubin/Scoreboard/blob/master/config.txt')
+    sys.exit()
 
 print('')
 
@@ -29,11 +32,19 @@ try:
 except:
     print('School logo not found.')
     input('Please place your logo as logo.png in the same directory')
+    sys.exit()
+
 try:
     if os.stat("backup.txt").st_size == 0:
         os.remove("backup.txt")
 except:
     pass
+
+time_a = 0
+a_on = False
+
+time_b = 24
+b_on = False
 
 # Check if blackout has occurred(quite frequent in Lebanon)
 if os.path.isfile('backup.txt') and os.stat('backup.txt').st_size != 0:
@@ -51,8 +62,8 @@ if os.path.isfile('backup.txt') and os.stat('backup.txt').st_size != 0:
     possesion = bool(backup.readline().rstrip('\n'))
 
 else:
-    team1name = input('Please enter team 1 name: ').upper()
-    team2name = input('Please enter team 2 name: ').upper()
+    team1name = "HERMON"#input('Please enter team 1 name: ').upper()
+    team2name = "BAROUK"#input('Please enter team 2 name: ').upper()
     team1score = 0
     team2score = 0
     currentperiod = 1
@@ -69,9 +80,6 @@ scorefontsize = int(config.readline().rstrip('\n'))
 foulnumberfontsize = int(config.readline().rstrip('\n'))
 basefonttype = config.readline().rstrip('\n')
 schoolfonttype = config.readline().rstrip('\n')
-
-time_a = 0
-a_on = False
 
 # Basic pygame stuff
 pygame.init()
@@ -135,6 +143,13 @@ while True:  # Main loop
                 pygame.time.set_timer(USEREVENT, 0)
             WriteToBackup()
 
+        if event.type == USEREVENT + 1:
+            if time_b > 0:
+                time_b -= 0.1
+                time_b = round(time_b, 1)
+            else:
+                pygame.time.set_timer(USEREVENT + 1, 0)
+
         if event.type == KEYDOWN:
 
             if event.key == K_SPACE:  # Pause/Play
@@ -144,6 +159,14 @@ while True:  # Main loop
                 else:
                     pygame.time.set_timer(USEREVENT, 0)
                     a_on = False
+
+            if event.key == K_0 or event.key == K_KP0:
+                if not b_on:
+                    pygame.time.set_timer(USEREVENT + 1, 100)
+                    b_on = True
+                else:
+                    pygame.time.set_timer(USEREVENT + 1, 0)
+                    b_on = False
 
             if event.key == K_a:
                 time_a += 60
@@ -210,6 +233,14 @@ while True:  # Main loop
             if event.key == K_g:
                 possesion = not possesion
 
+            if event.key == K_1 or event.key == K_KP1:
+            	time_b = 24
+            	pygame.time.set_timer(USEREVENT + 1, 100)
+
+            if event.key == K_2 or event.key == K_KP2:
+            	time_b = 14
+            	pygame.time.set_timer(USEREVENT + 1, 100)
+
             if event.key == K_ESCAPE:
                 backup.close()
                 print("Purging backup...")
@@ -226,14 +257,22 @@ while True:  # Main loop
     # Switch between mm:ss and ss.c
     if time_a > 60:
         time_a_str = '%d:%02d' % (int(time_a / 60), int(time_a % 60))
-
     else:
         time_a_str = '%.1f' % time_a
+
+    if time_b < 10:
+    	time_b_str = '%.1f' % time_b
+    else:
+    	time_b_str = str(int(time_b))
 
     # Start rendering
     time_a_txt = timefont.render(time_a_str, 1, textcolor)
     time_a_rect = time_a_txt.get_rect()
     time_a_rect.center = (640, 220)
+
+    time_b_txt = foulnumberfont.render(time_b_str, 1, textcolor)
+    time_b_rect = time_b_txt.get_rect()
+    time_b_rect.center = (640, 560)
 
     team1name_txt = teamfont.render(team1name, 1, textcolor)
     team1namerect = team1name_txt.get_rect()
@@ -253,11 +292,11 @@ while True:  # Main loop
 
     period_txt = teamfont.render('PERIOD', 1, textcolor)
     periodrect = period_txt.get_rect()
-    periodrect.center = (640, 390)
+    periodrect.center = (600, 390)
 
-    currentperiod_txt = scorefont.render(str(currentperiod), 1, textcolor)
+    currentperiod_txt = teamfont.render(str(currentperiod), 1, textcolor)
     currentperiodrect = currentperiod_txt.get_rect()
-    currentperiodrect.center = (640, 550)
+    currentperiodrect.center = (850, 390)
 
     foul_txt = foulfont.render('FOULS', 1, textcolor)
     foultextrect1 = foul_txt.get_rect()
@@ -276,18 +315,18 @@ while True:  # Main loop
     if possesion:
         possesion_txt = teamfont.render('>', 1, textcolor)
         possesionrect = possesion_txt.get_rect()
-        possesionrect.center = (750, 550)
+        possesionrect.center = (920, 390)
 
     elif not possesion:
         possesion_txt = teamfont.render('<', 1, textcolor)
         possesionrect = possesion_txt.get_rect()
-        possesionrect.center = (530, 550)
+        possesionrect.center = (350, 390)
 
 
     # Blit everything
     BoilerplateGraphics()
     pygame.draw.rect(screen, (255, 255, 255), (330, 110, 620, 230), 5)
-    pygame.draw.rect(screen, (255, 255, 255), (570, 450, 140, 200), 5)
+    pygame.draw.rect(screen, (255, 255, 255), (520, 470, 240, 180), 5)
 
     for num in range(team1fouls):
         if num > 4: # 5 fouls, but num starts from 0
@@ -300,6 +339,7 @@ while True:  # Main loop
         pygame.draw.rect(screen, (63 * num, 252 - 63 * num, 0), (1215, 680 - 30 * num, 50, 20))
 
     screen.blit(time_a_txt, time_a_rect)
+    screen.blit(time_b_txt, time_b_rect)
     screen.blit(team1name_txt, team1namerect)
     screen.blit(team2name_txt, team2namerect)
     screen.blit(team1score_txt, team1scorerect)

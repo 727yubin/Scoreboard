@@ -1,5 +1,5 @@
 # Scoreboard
-This program is a basketball scoreboard without a shot clock. This is used at my school, [LES Loueizeh](lesbg.com), with a Raspberry Pi over VNC.
+This program is a basketball scoreboard that includes a shot clock. This is used at my school, [LES Loueizeh](lesbg.com), with a Raspberry Pi over VNC.
 
 This program can also recover data if a power outage occurs during a game.
 
@@ -27,6 +27,12 @@ Fonts and colors can be controlled by editing `config.txt`.
 <kbd> d </kbd>: Add 0.1s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> c </kbd>: Subtract 0.1s
 
 <kbd> Space </kbd>: Start/stop clock
+
+<kbd> 1 </kbd>: Set shot clock to 24s and start
+
+<kbd> 2 </kbd>: Set shot clock to 14s and start
+
+<kbd> 0 </kbd>: Start/stop shot clock
 
 <kbd> f </kbd>: Add 1 to period &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> v </kbd>: Subtract 1 from period
 
