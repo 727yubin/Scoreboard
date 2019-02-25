@@ -44,16 +44,20 @@ except:
 time_a = 0
 timer_start = 0
 a_on = False
+recovered = False
 
 # Check if blackout has occurred(quite frequent in Lebanon)
 if os.path.isfile('backup-football.txt') and os.stat('backup-football.txt').st_size != 0:
     print('Reloading details from previous game... ')
     backup = open('backup-football.txt', 'r')
 
+    time_a = float(backup.readline().rstrip('\n'))
     team1name = backup.readline().rstrip('\n').upper()
     team2name = backup.readline().rstrip('\n').upper()
     team1score = int(backup.readline().rstrip('\n'))
     team2score = int(backup.readline().rstrip('\n'))
+
+    recovered = True
 
 else:
     team1name = input('Please enter team 1 name: ').upper()
@@ -94,7 +98,7 @@ credits2font = pygame.font.Font(basefonttype, 30)
 
 def WriteToBackup():
     backup = open('backup-football.txt', 'w')
-    backup.write('{}\n{}\n{}\n{}\n'.format(team1name, team2name, str(team1score), str(team2score)))
+    backup.write('{}\n{}\n{}\n{}\n{}\n'.format(str(time_a), team1name, team2name, str(team1score), str(team2score)))
     backup.flush()
     os.fsync(backup.fileno())
     backup.close()
@@ -105,8 +109,13 @@ while True:  # Main loop
         if event.type == KEYDOWN:
 
             if event.key == K_SPACE and a_on != True:
-                timer_start = time.time()
-                a_on = True
+                if recovered:
+                    timer_start = time.time() - time_a
+                    a_on = True
+                    recovered = False
+                else:
+                    timer_start = time.time()
+                    a_on = True
 
             if event.key == K_a:
                 team1score += 1
@@ -134,14 +143,15 @@ while True:  # Main loop
                 os.remove('backup-football.txt')
                 sys.exit()
 
-            WriteToBackup()
-
     # Convert to mm:ss
     if a_on:
         time_a = time.time() - timer_start
-    else:
+    elif not recovered:
         time_a = 0
     time_a_str = '%d:%02d' % (int(time_a / 60), int(time_a % 60))
+
+    if int(time_a % 10) % 2 == 0:
+        WriteToBackup()
 
     # Start rendering
     time_a_txt = timefont.render(time_a_str, 1, textcolor)

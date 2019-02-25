@@ -1,5 +1,5 @@
 # Scoreboard
-This program is a basketball scoreboard that includes a shot clock. This is used at my school, [LES Loueizeh](lesbg.com), with a Raspberry Pi over VNC.
+This program is a scoreboard. The basketball one includes a shot clock. This is used at my school, [LES Loueizeh](lesbg.com), with a Raspberry Pi over VNC.
 
 This program can also recover data if a power outage occurs during a game.
 
@@ -20,6 +20,8 @@ This program should work for all OSes, though not yet tested on OSX.
 Fonts and colors can be controlled by editing `config.txt`.
 
 # Keys:
+
+## Basketball:
 <kbd> a </kbd>: Add 60s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> z </kbd>: Subtract 60s
 
 <kbd> s </kbd>: Add 1s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> x </kbd>: Subtract 1s
@@ -51,3 +53,13 @@ Fonts and colors can be controlled by editing `config.txt`.
 <kbd> ' </kbd>: -1 foul Team 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> / </kbd>: -1 foul Team 2
 
 <kbd> Esc </kbd>: Quit
+
+## Football:
+
+<kbd> a </kbd>: +1 Team 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> d </kbd>: +1 Team 2
+
+<kbd> s </kbd>: -1 Team 1 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <kbd> f </kbd>: -1 Team 2
+
+<kbd> Space </kbd>: Start clock
+
+<kbd> r </kbd>: Reset clock

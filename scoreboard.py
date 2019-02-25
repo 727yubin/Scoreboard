@@ -271,13 +271,9 @@ while True:  # Main loop
     team2scorerect = team2score_txt.get_rect()
     team2scorerect.center = (1070, 350)
 
-    period_txt = teamfont.render('PERIOD', 1, textcolor)
+    period_txt = teamfont.render('PERIOD %i' % currentperiod, 1, textcolor)
     periodrect = period_txt.get_rect()
-    periodrect.center = (600, 390)
-
-    currentperiod_txt = teamfont.render(str(currentperiod), 1, textcolor)
-    currentperiodrect = currentperiod_txt.get_rect()
-    currentperiodrect.center = (850, 390)
+    periodrect.center = (640, 390)
 
     foul_txt = foulfont.render('FOULS', 1, textcolor)
     foultextrect1 = foul_txt.get_rect()
@@ -342,7 +338,6 @@ while True:  # Main loop
     screen.blit(team1score_txt, team1scorerect)
     screen.blit(team2score_txt, team2scorerect)
     screen.blit(period_txt, periodrect)
-    screen.blit(currentperiod_txt, currentperiodrect)
     screen.blit(foul_txt, foultextrect1)
     screen.blit(foul_txt, foultextrect2)
     screen.blit(team1fouls_txt, team1foulsrect)
