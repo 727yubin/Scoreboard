@@ -7,13 +7,14 @@
 # https://www.pygame.org/project-Chess+Clock-1991-3512.html
 # Used under GPL v3
 
-# A scoreboard for (primarily) basketball games
+# A scoreboard for football games
 
 import pygame
 from pygame.locals import *
 import os
 import sys
 import time
+import datetime
 from ast import literal_eval  # For getting tuples from config
 
 # Check for config file
@@ -86,15 +87,20 @@ pygame.mouse.set_visible(0)
 
 backup = open('backup-football.txt', 'w')
 
-timefont = pygame.font.Font(basefonttype, timefontsize)
-teamfont = pygame.font.Font(basefonttype, teamfontsize)
-scorefont = pygame.font.Font(basefonttype, scorefontsize)
-foulnumberfont = pygame.font.Font(basefonttype, foulnumberfontsize)
-foulfont = pygame.font.Font(basefonttype, 50)
-schoolfont = pygame.font.Font(schoolfonttype, 80)
-credits1font = pygame.font.Font(basefonttype, 20)
-credits2font = pygame.font.Font(basefonttype, 30)
-
+try: # Fonts
+    timefont = pygame.font.Font(basefonttype, timefontsize)
+    teamfont = pygame.font.Font(basefonttype, teamfontsize)
+    scorefont = pygame.font.Font(basefonttype, scorefontsize)
+    foulnumberfont = pygame.font.Font(basefonttype, foulnumberfontsize)
+    foulfont = pygame.font.Font(basefonttype, 50)
+    credits1font = pygame.font.Font(basefonttype, 20)
+    credits2font = pygame.font.Font(basefonttype, 30)
+except:
+    input("No base font found; please refer to https://github.com/727yubin/Scoreboard")
+try:
+    schoolfont = pygame.font.Font(schoolfonttype, 80)
+except:
+    input("No school font found; please refer to https://github.com/727yubin/Scoreboard")
 
 def WriteToBackup():
     backup = open('backup-football.txt', 'w')
@@ -158,6 +164,10 @@ while True:  # Main loop
     time_a_rect = time_a_txt.get_rect()
     time_a_rect.center = (640, 220)
 
+    currenttime_txt = schoolfont.render(datetime.datetime.now().strftime("%H:%M"), 1, textcolor)
+    currenttimerect = currenttime_txt.get_rect()
+    currenttimerect.center = (100, 50)
+
     team1name_txt = teamfont.render(team1name, 1, textcolor)
     team1namerect = team1name_txt.get_rect()
     team1namerect.center = (300, 420)
@@ -190,11 +200,13 @@ while True:  # Main loop
     screen.blit(background, rect)
     screen.blit(logo, (350, 0))
     pygame.draw.rect(screen, (255, 255, 255), (0, 90, 1280, 630), 10)
+    pygame.draw.rect(screen, (255, 255, 255), (0, 0, 200, 90), 10)
     pygame.draw.rect(screen, (255, 255, 255), (330, 110, 620, 230), 5)
     screen.blit(school_txt, schoolrect)
     screen.blit(credits1_txt, credits1rect)
     screen.blit(credits2_txt, credits2rect)
     screen.blit(time_a_txt, time_a_rect)
+    screen.blit(currenttime_txt, currenttimerect)
     screen.blit(team1name_txt, team1namerect)
     screen.blit(team2name_txt, team2namerect)
     screen.blit(team1score_txt, team1scorerect)

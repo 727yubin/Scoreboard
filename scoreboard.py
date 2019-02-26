@@ -7,13 +7,16 @@
 # https://www.pygame.org/project-Chess+Clock-1991-3512.html
 # Used under GPL v3
 
-# A scoreboard for (primarily) basketball games
+# A scoreboard for basketball games
 
 import pygame
 from pygame.locals import *
 import os
 import sys
+import datetime
 from ast import literal_eval  # For getting tuples from config
+
+pygame.init()
 
 # Check for config file
 try:
@@ -98,7 +101,6 @@ else:
     possesion = False
 
 # Basic pygame stuff
-pygame.init()
 pygame.display.init()
 screen = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
 background = pygame.Surface(screen.get_size())
@@ -261,6 +263,10 @@ while True:  # Main loop
     time_b_rect = time_b_txt.get_rect()
     time_b_rect.center = (640, 560)
 
+    currenttime_txt = schoolfont.render(datetime.datetime.now().strftime("%H:%M"), 1, textcolor)
+    currenttimerect = currenttime_txt.get_rect()
+    currenttimerect.center = (100, 50)
+
     team1name_txt = teamfont.render(team1name, 1, textcolor)
     team1namerect = team1name_txt.get_rect()
     team1namerect.center = (250, 500)
@@ -321,9 +327,11 @@ while True:  # Main loop
     screen.blit(background, rect)
     screen.blit(logo, (350, 0))
     pygame.draw.rect(screen, (255, 255, 255), (0, 90, 1280, 630), 10)
+    pygame.draw.rect(screen, (255, 255, 255), (0, 0, 200, 90), 10)
     pygame.draw.rect(screen, (255, 255, 255), (330, 110, 620, 230), 5)
     pygame.draw.rect(screen, (255, 255, 255), (520, 470, 240, 180), 5)
     screen.blit(school_txt, schoolrect)
+    screen.blit(currenttime_txt, currenttimerect)
     screen.blit(credits1_txt, credits1rect)
     screen.blit(credits2_txt, credits2rect)
 
