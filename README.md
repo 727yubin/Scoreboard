@@ -15,10 +15,7 @@ This program should work for all OSes, though not yet tested on OSX.
 * Preferably a large display
 
 # Execution:
-`cd` into the directory.
-For the basketball scoreboard, run `python3 scoreboard.py`.
-For the football(soccer) scoreboard, run `python3 scoreboard-football.py`.
-For the volleyball scoreboard, run `python3 scoreboard-volleyball.py`.
+`cd` into the directory, then run `python3 launcher.py`.
 
 Fonts and colors can be controlled by editing `config.txt`.
 
