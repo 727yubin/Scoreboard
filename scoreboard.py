@@ -481,3 +481,4 @@ while True:  # Event loop
         WriteToBackup()
 
     update(updatelist)
+    clock.tick(20)
