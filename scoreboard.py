@@ -55,16 +55,6 @@ def WriteToBackup():
     backup.close()
 
 
-def update(rects):
-    for txt in rects.keys():
-        pygame.draw.rect(screen, (BGCOLOR), rects[txt], 0)
-        if txt is None:
-            pass
-        else:
-            screen.blit(txt, rects[txt])
-    pygame.display.update(list(rects.values()))
-
-
 team1 = team()
 team2 = team()
 
@@ -150,11 +140,11 @@ backup = open('backup.txt', 'w')
 # Static Graphics
 team1name_txt = TEAMFONT.render(team1.name, 1, TEXTCOLOR)
 team1namerect = team1name_txt.get_rect()
-team1namerect.center = (250, 500)
+team1namerect.center = (230, 500)
 
 team2name_txt = TEAMFONT.render(team2.name, 1, TEXTCOLOR)
 team2namerect = team2name_txt.get_rect()
-team2namerect.center = (1030, 500)
+team2namerect.center = (1050, 500)
 
 team1score_txt = SCOREFONT.render(str(team1.score), 1, TEXTCOLOR)
 team1scorerect = team1score_txt.get_rect()
@@ -197,6 +187,36 @@ screen.blit(foul_txt, foultextrect1)
 screen.blit(foul_txt, foultextrect2)
 
 # Dynamic base graphics
+if timer_txt_a > 60:
+    time_a_str = '%d:%02d' % (int(timer_txt_a / 60), int(timer_txt_a % 60))
+else:
+    time_a_str = '%.1f' % timer_txt_a
+
+time_a_txt = TIMEFONT.render(time_a_str, 1, TEXTCOLOR)
+time_a_rect = time_a_txt.get_rect()
+time_a_rect.center = (640, 233)
+screen.blit(time_a_txt, time_a_rect)
+
+if state_b and timer_txt_b > 0:
+    timer_txt_b = time_b - time() + start_time_b
+elif not state_b:
+    timer_txt_b = time_b
+
+if timer_txt_b <= 0:
+    reset_b()
+
+if timer_txt_b < 10:
+    time_b_str = '%.1f' % timer_txt_b
+else:
+    time_b_str = str(int(timer_txt_b))
+if len(time_b_str) > 3:
+    time_b_str = "10"
+
+time_b_txt = FOULNUMBERFONT.render(time_b_str, 1, TEXTCOLOR)
+time_b_rect = time_b_txt.get_rect()
+time_b_rect.center = (640, 610)
+screen.blit(time_b_txt, time_b_rect)
+
 team1score_txt = SCOREFONT.render(str(team1.score), 1, TEXTCOLOR)
 team1scorerect = team1score_txt.get_rect()
 team1scorerect.center = (210, 350)
@@ -254,6 +274,9 @@ team2scorecontrol = [K_b, K_n, K_m, K_COMMA]
 team1foulcontrol = [K_SEMICOLON, K_QUOTE]
 team2foulcontrol = [K_PERIOD, K_SLASH]
 
+foul1region = pygame.Rect(389, 553, 58, 151)
+foul2region = pygame.Rect(1211, 553, 58, 151)
+
 while True:  # Event loop
     if state_a and timer_txt_a > 0:
         timer_txt_a = time_a - time() + start_time_a
@@ -279,6 +302,8 @@ while True:  # Event loop
     time_a_txt = TIMEFONT.render(time_a_str, 1, TEXTCOLOR)
     time_a_rect = time_a_txt.get_rect()
     time_a_rect.center = (640, 233)
+    pygame.draw.rect(screen, BGCOLOR, time_a_rect, 0)
+    screen.blit(time_a_txt, time_a_rect)
 
     if state_b and timer_txt_b > 0:
         timer_txt_b = time_b - time() + start_time_b
@@ -305,6 +330,8 @@ while True:  # Event loop
     time_b_txt = FOULNUMBERFONT.render(time_b_str, 1, TEXTCOLOR)
     time_b_rect = time_b_txt.get_rect()
     time_b_rect.center = (640, 610)
+    pygame.draw.rect(screen, BGCOLOR, time_b_rect, 0)
+    screen.blit(time_b_txt, time_b_rect)
 
     old_score1_len = score1_len
     score1_len = len(str(team1.score))
@@ -331,8 +358,10 @@ while True:  # Event loop
     currenttime_txt = SCHOOLFONT.render(datetime.now().strftime("%H:%M"), 1, TEXTCOLOR)
     currenttimerect = currenttime_txt.get_rect()
     currenttimerect.center = (100, 45)
+    pygame.draw.rect(screen, BGCOLOR, currenttimerect, 0)
+    screen.blit(currenttime_txt, currenttimerect)
 
-    updatelist = {time_a_txt: time_a_rect, time_b_txt: time_b_rect, currenttime_txt: currenttimerect}
+    updatelist = [time_a_rect, time_b_rect, currenttimerect]
 
     for event in pygame.event.get():
 
@@ -369,7 +398,9 @@ while True:  # Event loop
                 team1score_txt = SCOREFONT.render(str(team1.score), 1, TEXTCOLOR)
                 team1scorerect = team1score_txt.get_rect()
                 team1scorerect.center = (210, 350)
-                updatelist[team1score_txt] = team1scorerect
+                pygame.draw.rect(screen, BGCOLOR, team1scorerect, 0)
+                screen.blit(team1score_txt, team1scorerect)
+                updatelist.append(team1scorerect)
 
             elif event.key in team2scorecontrol:
                 if event.key == K_b:
@@ -384,7 +415,9 @@ while True:  # Event loop
                 team2score_txt = SCOREFONT.render(str(team2.score), 1, TEXTCOLOR)
                 team2scorerect = team2score_txt.get_rect()
                 team2scorerect.center = (1070, 350)
-                updatelist[team2score_txt] = team2scorerect
+                pygame.draw.rect(screen, BGCOLOR, team2scorerect, 0)
+                screen.blit(team2score_txt, team2scorerect)
+                updatelist.append(team2scorerect)
 
             elif event.key in team1foulcontrol:
                 if event.key == K_SEMICOLON:
@@ -395,7 +428,9 @@ while True:  # Event loop
                 team1fouls_txt = FOULNUMBERFONT.render(str(team1.fouls), 1, TEXTCOLOR)
                 team1foulsrect = team1fouls_txt.get_rect()
                 team1foulsrect.center = (330, 620)
-                updatelist[team1fouls_txt] = team1foulsrect
+                pygame.draw.rect(screen, BGCOLOR, team1foulsrect, 0)
+                screen.blit(team1fouls_txt, team1foulsrect)
+                updatelist.append(team1foulsrect)
 
                 for num in range(team1.fouls):
                     if num > 4:
@@ -405,7 +440,7 @@ while True:  # Event loop
                         pygame.draw.rect(screen, BGCOLOR, (395, 680 - 30 * (5 - blanks), 50, 20))
                 if team1.fouls == 0:
                     pygame.draw.rect(screen, BGCOLOR, (395, 680, 50, 20))
-                pygame.display.update()
+                updatelist.append(foul1region)
 
             elif event.key in team2foulcontrol:
                 if event.key == K_PERIOD:
@@ -415,7 +450,9 @@ while True:  # Event loop
                 team2fouls_txt = FOULNUMBERFONT.render(str(team2.fouls), 1, TEXTCOLOR)
                 team2foulsrect = team2fouls_txt.get_rect()
                 team2foulsrect.center = (1150, 620)
-                updatelist[team2fouls_txt] = team2foulsrect
+                pygame.draw.rect(screen, BGCOLOR, team2foulsrect, 0)
+                screen.blit(team2fouls_txt, team2foulsrect)
+                updatelist.append(team2foulsrect)
 
                 for num in range(team2.fouls):
                     if num > 4:
@@ -425,7 +462,7 @@ while True:  # Event loop
                         pygame.draw.rect(screen, BGCOLOR, (1215, 680 - 30 * (5 - blanks), 50, 20))
                 if team2.fouls == 0:
                     pygame.draw.rect(screen, BGCOLOR, (1215, 680, 50, 20))
-                pygame.display.update()
+                updatelist.append(foul2region)
 
             elif event.key in maintimecontrol:
                 if event.key == K_a:
@@ -476,9 +513,16 @@ while True:  # Event loop
                     period_txt = TEAMFONT.render('  PERIOD %i>' % CURRENTPERIOD, 1, TEXTCOLOR)
                 periodrect = period_txt.get_rect()
                 periodrect.center = (640, 450)
-                updatelist[period_txt] = periodrect
+                pygame.draw.rect(screen, BGCOLOR, periodrect, 0)
+                screen.blit(period_txt, periodrect)
+                updatelist.append(periodrect)
 
         WriteToBackup()
 
-    update(updatelist)
+    if not state_a:
+        updatelist.remove(time_a_rect)
+    if not state_b:
+        updatelist.remove(time_b_rect)
+
+    pygame.display.update(updatelist)
     clock.tick(20)
